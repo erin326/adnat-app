@@ -8,4 +8,6 @@
 
 
 Organization.create(name: "Bob's Burgers", hourly_rate: 10)
-User.create(username: 'Kelly', email_address: 'kelly.verkoulen@gmail.com', password: 'hello123')
+
+Organization.create(name: "Moe's Tavern", hourly_rate: 12)
+Organization.create(name: "Sally's Sandwiches", hourly_rate: 15)

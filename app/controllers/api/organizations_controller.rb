@@ -8,15 +8,32 @@ class Api::OrganizationsController < ApplicationController
 
     def create 
         user = User.find_by(id: session[:user_id])
+
         if user    
             organization = Organization.create(organization_params)
-            organization.users << user
+            
             if organization.valid?
-                render json: organization
+                organization.users << user
+                render json: organization, include: :users, status: :created
             else
                 render json: {errors: organization.errors.full_messages}, status: :unprocessable_entity
             end
         end
+    
+    end
+
+    def update
+        organization = Organization.find(params[:id])
+        organization.update(organization_params)
+        render json: organization
+    end
+
+    def show
+        user = User.find_by(id: session[:user_id])
+            if user
+            organization = user.organization
+            render json: organization
+            end
     end
 
     private 
@@ -24,4 +41,5 @@ class Api::OrganizationsController < ApplicationController
     def organization_params
         params.permit(:name, :hourly_rate)
     end
+
 end

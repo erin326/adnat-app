@@ -1,6 +1,6 @@
 import {useState} from 'react';
 
-function NewOrganization() {
+function NewOrganization({organizations}) {
 
     const [name, setName] = useState('');
     const [hourlyRate, setHourlyRate] = useState(0);

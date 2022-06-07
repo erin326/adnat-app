@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   namespace :api do 
 
-    resources :organizations, only: [:index, :create]
+    resources :organizations, only: [:index, :create, :update, :show]
 
     post '/signup', to: 'users#create'
     get '/me', to: 'users#show'

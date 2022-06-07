@@ -10,4 +10,7 @@
 Organization.create(name: "Bob's Burgers", hourly_rate: 10)
 
 Organization.create(name: "Moe's Tavern", hourly_rate: 12)
-Organization.create(name: "Sally's Sandwiches", hourly_rate: 15)
+sallys = Organization.create(name: "Sally's Sandwiches", hourly_rate: 15)
+
+ kelly = User.create(username: 'Kelly Verk', email_address: 'kelly@example.com', password: 'marvin123')
+ sallys.users << kelly

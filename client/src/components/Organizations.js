@@ -1,8 +1,18 @@
 import {useEffect, useState} from 'react';
-
-function Organizations() {
+import OrganizationCard from './OrganizationCard';
+function Organizations({selectOrg, selectedOrg}) {
 
     const [organizations, setOrganizations] = useState([]);
+   
+    
+  function handleUpdateOrg(updatedOrg) {
+    const updatedOrgArray = organizations.map((org) => {
+      return org.id === updatedOrg.id ? updatedOrg : org;
+    });
+    setOrganizations(updatedOrgArray);
+  }
+    
+
 
    useEffect(() => {
     fetch('api/organizations')
@@ -14,7 +24,7 @@ function Organizations() {
 
    const displayOrganizations = organizations.map((organization) => (
       
-       <li key={organization.id}>{organization.name}</li>
+       <OrganizationCard selectedOrg={selectedOrg} selectOrg={selectOrg} key={organization.id}organization={organization} onUpdateOrg={handleUpdateOrg}/>
    ))
        
     

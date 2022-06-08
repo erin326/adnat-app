@@ -4,7 +4,7 @@ import { useState } from 'react';
 import {useLocation} from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
 
-function OrgPage({user, organization, selectedOrg,onJoin, selectOrg}) {
+function OrgPage({user, organization, selectedOrg,selectOrg}) {
 
 console.log(selectedOrg);
 // console.log(organization);
@@ -14,6 +14,8 @@ const [joined, setJoined] = useState(false);
    const [updatedUser, setUpdatedUser] = useState({});
 
    const navigate = useNavigate()
+
+
 //    const location = useLocation()
 //    const {from}  = location.state
 
@@ -68,6 +70,8 @@ const [joined, setJoined] = useState(false);
                 organization_id: null 
            })
        })
+       navigate('/')
+       window.location.reload()
    
 
 

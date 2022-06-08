@@ -21,6 +21,9 @@ function OrganizationCard({user, organization, onUpdateOrg, onJoin, selectOrg, s
             },
             body: JSON.stringify(formData)
         })
+        navigate('/')
+        window.location.reload()
+    
         // window.location.reload()
 
         

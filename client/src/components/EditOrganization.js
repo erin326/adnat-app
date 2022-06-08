@@ -13,10 +13,10 @@ function EditOrganization({user,  selectedOrg}) {
 
     const navigate = useNavigate();
 
-    console.log(selectedOrg.id);
+
     function handleUpdateOrg(e){
         e.preventDefault();
-      
+        
         fetch(`/api/organizations/${selectedOrg.id}`, {
             method: "PATCH",
             headers: {

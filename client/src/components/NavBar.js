@@ -24,7 +24,7 @@ function NavBar({user, setUser}) {
             <button id='logout-button' onClick={handleLogout}>Logout</button>
         </nav>
 
-        {user.organization_id === null ? <p>You aren't a member of any organizations. Join an existing one or create a new one.</p> : null}
+        {user.organization === null ? <p>You aren't a member of any organizations. Join an existing one or create a new one.</p> : null}
         </>
     )
 }

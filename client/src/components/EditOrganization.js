@@ -36,7 +36,13 @@ function EditOrganization({user,  selectedOrg}) {
 
     console.log(selectedOrg);
  
-
+    function handleDeleteOrg() {
+        fetch(`/api/organizations/${selectedOrg.id}`, {
+            method: "DELETE"
+        })
+        navigate('/')
+        // window.location.reload()
+    }
 
 
     // function handleUpdateSubmit(e){
@@ -77,6 +83,8 @@ function EditOrganization({user,  selectedOrg}) {
                 ></input>
                 <button type='submit'>Update</button>
             </form>
+
+            <button onClick={handleDeleteOrg}>Delete</button>
 
         </div>
     )

@@ -3,7 +3,7 @@ import {useState} from 'react';
 function NewOrganization() {
 
     const [name, setName] = useState('');
-    const [hourlyRate, setHourlyRate] = useState(0);
+    const [hourlyRate, setHourlyRate] = useState('');
 
     function handleSubmit(e) {
         e.preventDefault();

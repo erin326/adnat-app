@@ -49,7 +49,11 @@ class Api::OrganizationsController < ApplicationController
         
     end
 
-    
+    def destroy
+        organization = Organization.find(params[:id])
+        organization.destroy
+        head :no_content
+    end
 
     private 
 

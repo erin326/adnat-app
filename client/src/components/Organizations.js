@@ -39,6 +39,7 @@ function Organizations({user, selectOrg, selectedOrg}) {
 
     return(
         <div>
+            
             { displayOrganizations}
            
                

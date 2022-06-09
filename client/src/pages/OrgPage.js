@@ -72,8 +72,6 @@ const [joined, setJoined] = useState(false);
        })
        navigate('/')
        window.location.reload()
-   
-
 
    }
 
@@ -83,8 +81,10 @@ const [joined, setJoined] = useState(false);
         <div>
             {user.organization ?    <div>
             <h2>{user.organization.name}</h2>
-            <Link to={"/edit/" + user.organization.id} >Edit</Link>
-            <Link onClick={leaveOrg} to='/leave'> Leave</Link>
+            <Link to={'/shifts/' + user.organization.id}>View Shifts </Link>
+            <Link to={"/edit/" + user.organization.id} > Edit </Link>
+            <Link onClick={leaveOrg} to='/leave'> Leave </Link>
+           
             </div> :null }
           
 

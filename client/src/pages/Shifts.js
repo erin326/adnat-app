@@ -10,8 +10,8 @@ function Shifts({user}) {
     const [finish, setFinish] = useState('')
     
     const [shiftDate, setShiftDate] = useState('');
-    let [startTime, setStartTime] = useState('');
-    let [finishTime, setFinishTime] = useState('');
+    const [startTime, setStartTime] = useState('');
+    const [finishTime, setFinishTime] = useState('');
 
     const [startAmPm, setStartAmPm] = useState('');
     const [finishAmPm, setFinishAmPm] = useState('');
@@ -20,7 +20,7 @@ function Shifts({user}) {
     const [hoursWorked, setHoursWorked] = useState('');
     const [shiftCost, setShiftCost] = useState('');
 
-    const test = new Date('2022-06-12T08:00:00.000Z');
+    const test = new Date('2022-06-12T02:00:00.000Z');
     // 2022-06-12T20:00:00.000Z
     // '2022-06-12T16:00:00.000Z'
   
@@ -61,18 +61,21 @@ function Shifts({user}) {
             // console.log(utcTimeStr);
             // startTime = utcTimeStr
             if (startAmPm === 'pm' && startTime.length > 4 ) {
-                const time = new Date(`${dateStr}T${startTime}:00`).toISOString()
+              
+                // console.log(cstToUtc(time));
+                const num = parseInt(startTime.slice(0,2)) +12
+                console.log(num);
+                
+                const newNum = num.toString();
+                const utcTimeStr = newNum.concat(':00')
+                console.log(utcTimeStr);
+                const time = new Date(`${dateStr}T${utcTimeStr}:00`).toISOString()
                 console.log(time);
                 console.log(startTime);
-                // console.log(cstToUtc(time));
-                // const num = parseInt(startTime[0]) + 12
-                
-                // const newNum = num.toString();
-                // const ISOTimeStr = newNum.concat(':00')
                 // startTime = utcTimeStr
             
             
-                // console.log(cstToUtc(time));
+                console.log(cstToUtc(time));
             
             }else if (startAmPm === 'pm' && startTime.length <= 4) {
                 const num = parseInt(startTime[0]) +12 
@@ -99,9 +102,15 @@ function Shifts({user}) {
         // }
 
            if (finishAmPm === 'pm' && finishTime.length > 4 ) {
-               console.log(finishTime);
-               const time = new Date(`${dateStr}T${finishTime}:00`).toISOString()
-               console.log('time',time);
+        const num = parseInt(finishTime.slice(0,2)) +12
+                console.log(num);
+                
+                const newNum = num.toString();
+                const utcTimeStr = newNum.concat(':00')
+                console.log(utcTimeStr);
+                const time = new Date(`${dateStr}T${utcTimeStr}:00`).toISOString()
+                console.log(time);
+                console.log(finishTime);
             //    console.log(finishTime);
             }else if (finishAmPm
                  === 'pm' && finishTime.length <= 4 ){
@@ -126,6 +135,7 @@ function Shifts({user}) {
                
             const time = new Date(`${dateStr}T${startTime}:00`).toISOString()
             console.log('time',time);
+            console.log(startTime);
             // console.log(startTime);
          }else if ( startAmPm === 'am' && startTime.length <= 4){
              const time = new Date(`${dateStr}T0${startTime}:00`).toISOString()

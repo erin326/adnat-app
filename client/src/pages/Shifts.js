@@ -20,6 +20,9 @@ function Shifts({user}) {
     const [hoursWorked, setHoursWorked] = useState('');
     const [shiftCost, setShiftCost] = useState('');
 
+    const test = new Date('2022-06-12T08:00:00.000Z');
+    // 2022-06-12T20:00:00.000Z
+    // '2022-06-12T16:00:00.000Z'
   
     function cstToUtc(date) {
         const string = date.toLocaleString('en-US', {
@@ -28,6 +31,14 @@ function Shifts({user}) {
           console.log(string);
 
     }
+    function utc(date) {
+        const string = date.toLocaleString('en-US', {
+            timeZone: 'UTC',
+          })
+          console.log(string);
+
+    }
+    console.log(test)
 
     useEffect(() => {
         fetch('/api/shifts')
@@ -41,70 +52,102 @@ function Shifts({user}) {
 
         const dateStr = date.slice(0, 10)
 
-        if( startAmPm === 'pm' ) {
-           const num = parseInt(startTime[0]) + 12
-           const newNum = num.toString();
-           const utcTimeStr = newNum.concat(':00')
-            console.log(utcTimeStr);
-            startTime = utcTimeStr
-            if (startTime.length > 4 ) {
+        // if( startAmPm === 'pm' ) {
+            // console.log('SPLIT', startTime.split(':')[0]);
+        //    const num = parseInt(startTime[0]) + 12
+        //    const newNum = num.toString();
+        //    const utcTimeStr = newNum.concat(':00')
+        //    console.log(newNum);
+            // console.log(utcTimeStr);
+            // startTime = utcTimeStr
+            if (startAmPm === 'pm' && startTime.length > 4 ) {
+                const time = new Date(`${dateStr}T${startTime}:00`).toISOString()
+                console.log(time);
+                console.log(startTime);
+                // console.log(cstToUtc(time));
+                // const num = parseInt(startTime[0]) + 12
+                
+                // const newNum = num.toString();
+                // const ISOTimeStr = newNum.concat(':00')
+                // startTime = utcTimeStr
             
-                const time = new Date(`${dateStr}T${timeObj}:00`).toISOString()
-                console.log('time',time);
-                // console.log(timeObj);
             
-            }else {
-                 const time = new Date(`${dateStr}T0${timeObj}:00`).toISOString()
+                // console.log(cstToUtc(time));
+            
+            }else if (startAmPm === 'pm' && startTime.length <= 4) {
+                const num = parseInt(startTime[0]) +12 
+
+                const newNum = num.toString();
+                const utcTimeStr = newNum.concat(':00')
+                console.log(num);
+                console.log(newNum);
+                console.log(utcTimeStr);
+                const time = new Date(`${dateStr}T${utcTimeStr}:00`).toISOString()
                 console.log('time',time);
+                console.log(startTime);
+                console.log(startTime.length);
+                console.log(cstToUtc(time));
             }
 
-        } 
-        if (finishAmPm === 'pm' ) {
-           const num =  parseInt(finishTime[0]) + 12
-           const newNum = num.toString();
-           const utcTimeStr = newNum.concat(':00')
-           finishTime = utcTimeStr
+        // } 
+        // if (finishAmPm === 'pm' ) {
+        //    const num =  parseInt(finishTime[0]) +12
+        //    console.log(typeof(num), num);
+        //    const newNum = num.toString();
+        //    const utcTimeStr = newNum.concat(':00')
+        //    finishTime = utcTimeStr
+        // }
 
-           if (timeObj.length > 4 ) {
-               
-               const time = new Date(`${dateStr}T${timeObj}:00`).toISOString()
+           if (finishAmPm === 'pm' && finishTime.length > 4 ) {
+               console.log(finishTime);
+               const time = new Date(`${dateStr}T${finishTime}:00`).toISOString()
                console.log('time',time);
-            //    console.log(timeObj);
-            }else{
-                const time = new Date(`${dateStr}T0${timeObj}:00`).toISOString()
+            //    console.log(finishTime);
+            }else if (finishAmPm
+                 === 'pm' && finishTime.length <= 4 ){
+                     console.log(finishTime);
+                    const number = parseInt(finishTime[0]) +12 
+
+                    const newNumber = number.toString();
+                    const utcFinish = newNumber.concat(':00')
+                    console.log(number);
+                    console.log(newNumber);
+                    console.log(utcFinish);
+                const time = new Date(`${dateStr}T${utcFinish}:00`).toISOString()
                 console.log('time',time);
+                console.log(cstToUtc(time));
             }
 
 
 
-        } 
-        if (startAmPm === 'am') {
-            
-           if (timeObj.length > 4 ) {
+        
+        if (startAmPm === 'am' && startTime.length >4) {
+      
                
-            const time = new Date(`${dateStr}T${timeObj}:00`).toISOString()
+            const time = new Date(`${dateStr}T${startTime}:00`).toISOString()
             console.log('time',time);
-            // console.log(timeObj);
-         }else{
-             const time = new Date(`${dateStr}T0${timeObj}:00`).toISOString()
+            // console.log(startTime);
+         }else if ( startAmPm === 'am' && startTime.length <= 4){
+             const time = new Date(`${dateStr}T0${startTime}:00`).toISOString()
+             console.log('time',time);
+             console.log(startTime);
+             console.log(cstToUtc(time));
+         }
+
+        
+
+        if (finishAmPm === 'am' && finishTime.length >4) {
+        
+               
+            const time = new Date(`${dateStr}T${finishTime}:00`).toISOString()
+            console.log('time',time);
+            console.log(utc(time));
+         }else if (finishAmPm === 'am' && finishTime.length <= 4) {
+             const time = new Date(`${dateStr}T0${finishTime}:00`).toISOString()
              console.log('time',time);
          }
 
-        }
-
-        if (finishAmPm === 'am') {
-            
-           if (timeObj.length > 4 ) {
-               
-            const time = new Date(`${dateStr}T${timeObj}:00`).toISOString()
-            console.log('time',time);
-            // console.log(timeObj);
-         }else{
-             const time = new Date(`${dateStr}T0${timeObj}:00`).toISOString()
-             console.log('time',time);
-         }
-
-        }
+        
    
         // if (startAmPm === 'am' && timeObj.length > 4) {
         //     const time = new Date(`${dateStr}T${timeObj}:00`).toISOString()
@@ -121,38 +164,37 @@ function Shifts({user}) {
     
     }
 
-    const formatAMPM = (date) => {
-        // const date = new Date(shiftDate).toISOString()
+    // const formatAMPM = (date) => {
+    //     // const date = new Date(shiftDate).toISOString()
 
 
-        // const t = date.slice(0, 10)
-        // const time = new Date(`${t}T${timeObj}:00`).toISOString()
-        // console.log('time',time);
+    //     // const t = date.slice(0, 10)
+    //     // const time = new Date(`${t}T${timeObj}:00`).toISOString()
+    //     // console.log('time',time);
 
-        let hours = date.getHours();
-        let minutes = date.getMinutes();    
-        const ampm = hours >= 12 ? 'pm' : 'am';
+    //     let hours = date.getHours();
+    //     let minutes = date.getMinutes();    
+    //     const ampm = hours >= 12 ? 'pm' : 'am';
       
-        hours %= 12;
-        hours = hours || 12;    
-        minutes = minutes < 10 ? `0${minutes}` : minutes;
+    //     hours %= 12;
+    //     hours = hours || 12;    
+    //     minutes = minutes < 10 ? `0${minutes}` : minutes;
       
-        const strTime = `${hours}:${minutes} ${ampm}`;
+    //     const strTime = `${hours}:${minutes} ${ampm}`;
       
-        return strTime;
-      };
+    //     return strTime;
+    //   };
       
     //   console.log(formatAMPM(user.shifts.start));
 
     function createShift(e) {
         e.preventDefault()
 
-        cstToUtc(startTime)
-        cstToUtc(finishTime)
+        // cstToUtc(startTime)
+        // cstToUtc(finishTime)
 
 
-        convertTime(startTime)
-        convertTime(finishTime)
+    convertTime()
         // const date = new Date()
         // const start =  convertTime(startTime);
         // const finish = convertTime(finishTime);

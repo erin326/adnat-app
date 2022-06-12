@@ -1,3 +1,4 @@
+import { min } from 'moment';
 import {useState} from 'react';
 import { useEffect } from 'react';
 
@@ -5,7 +6,8 @@ import { useEffect } from 'react';
 
 function Shifts({user}) {
 
-
+    const hourlyRate = user.organization.hourly_rate;
+    console.log(hourlyRate);
     const [start, setStart] = useState('')
     const [finish, setFinish] = useState('')
     
@@ -15,15 +17,81 @@ function Shifts({user}) {
 
     const [startAmPm, setStartAmPm] = useState('');
     const [finishAmPm, setFinishAmPm] = useState('');
+    const [selectedAmPm, setSelectedAmPm] = useState(false)
 
     const [breakLength, setBreakLength] = useState('');
     const [hoursWorked, setHoursWorked] = useState('');
     const [shiftCost, setShiftCost] = useState('');
 
-    const test = new Date('2022-06-12T02:00:00.000Z');
+    const [errors, setErrors] = useState([])
+ 
+    const test = new Date('2022-06-12T22:00:00.000Z');
     // 2022-06-12T20:00:00.000Z
     // '2022-06-12T16:00:00.000Z'
+
+    function diff_minutes(dt2, dt1, breakLength)  {
+        let minutes; 
+        if(breakLength) {
+            minutes = (dt2 - dt1) / (1000 * 60) - breakLength
+        } else{
+            minutes = (dt2 - dt1) / (1000 * 60)
+        }
+        console.log(minutes);
+        console.log(dt2, 'finish time');
+        console.log(dt1, 'start time');
+        const mins = minutes % 60
+        console.log(mins);
+
+
+        const hours = Math.floor(minutes / 60)
+        console.log(hours);
+        // if (mins < 10 ) {
+        //     setHoursWorked(`${hours}:0${mins}`)
+        // } else{
+        //     setHoursWorked(`${hours}:${mins}`)
+        // }
+        const minuteDecimal = Math.round(mins  * 100) / 60;
+        setHoursWorked(`${hours}.${minuteDecimal}`)
+
+        console.log(hoursWorked);
+              // console.log(`${padTo2Digits(hours)}:${padTo2Digits(mins)}hiiiiii`);
+    }
+    let currentTime = new Date();
+    console.log(currentTime);
+let expireTime = new Date('2022-06-12T03:18:33.000Z');
+console.log(expireTime);
+let minutes = (expireTime - currentTime) / (1000 * 60);
+const rmins = minutes % 60
+const hours = Math.floor(rmins / 60)
+console.log(hours, '&', rmins);
+
+// console.log(`${padTo2Digits(hours)}:${padTo2Digits(minutes)}`);
+// console.log(minutes);
+
+ 
+//   let diff =(dt2 - dt1) / 1000;
+//   const mins = diff /= 60;
+//   const hours = Math.floor(diff / 60);
+//   return `${padTo2Digits(hours)}:${padTo2Digits(mins)}`;
+
+//   return Math.abs(Math.round(diff));
   
+//  }
+
+    function calculateShiftCost(hoursWorked, hourlyRate) {
+       const total =  hoursWorked * hourlyRate
+        
+       setShiftCost(total)
+        console.log(shiftCost);
+        
+    }
+    //  function padTo2Digits(num) {
+    //     return num.toString().padStart(2, '0');
+    //   }
+
+// const dt1 = new Date(2014,10,2);
+// const dt2 = new Date(2014,10,3);
+// console.log(diff_minutes(dt1, dt2));
     function cstToUtc(date) {
         const string = date.toLocaleString('en-US', {
             timeZone: 'CST',
@@ -46,50 +114,61 @@ function Shifts({user}) {
         .then((data) => console.log(data))
 
     },[])
+    
+    // function calculateHours(start, finish) {
+    //     const f = finish.split('T')
+    //     const s = start.split('T')
+    //     // const hours = finish - start
+    //     // console.log(hours);
+    //     console.log(f, s);
+    // }
 
     function convertTime(timeObj) {
+        if(startTime && finishTime) {
+
+      
         const date = new Date(shiftDate).toISOString()
 
         const dateStr = date.slice(0, 10)
 
-        // if( startAmPm === 'pm' ) {
-            // console.log('SPLIT', startTime.split(':')[0]);
-        //    const num = parseInt(startTime[0]) + 12
-        //    const newNum = num.toString();
-        //    const utcTimeStr = newNum.concat(':00')
-        //    console.log(newNum);
-            // console.log(utcTimeStr);
-            // startTime = utcTimeStr
             if (startAmPm === 'pm' && startTime.length > 4 ) {
               
+                setSelectedAmPm(true)
                 // console.log(cstToUtc(time));
                 const num = parseInt(startTime.slice(0,2)) +12
                 console.log(num);
                 
                 const newNum = num.toString();
-                const utcTimeStr = newNum.concat(':00')
+                const mins = startTime.slice(startTime.length - 2);
+                const utcTimeStr = newNum.concat(`:${mins}`)
                 console.log(utcTimeStr);
-                const time = new Date(`${dateStr}T${utcTimeStr}:00`).toISOString()
-                console.log(time);
+                // const time = new Date(`${dateStr}T${utcTimeStr}:00`).getHours()
+                const fullDate = new Date(`${dateStr}T${utcTimeStr}:00`).toISOString()
+                // console.log(time, 'HI');
                 console.log(startTime);
+                const time = new Date(fullDate)
+                setStart(time)
                 // startTime = utcTimeStr
             
             
                 console.log(cstToUtc(time));
             
             }else if (startAmPm === 'pm' && startTime.length <= 4) {
-                const num = parseInt(startTime[0]) +12 
+                setSelectedAmPm(true)
 
+                const num = parseInt(startTime[0]) +12 
+                const mins = startTime.slice(startTime.length - 2);
                 const newNum = num.toString();
-                const utcTimeStr = newNum.concat(':00')
-                console.log(num);
-                console.log(newNum);
-                console.log(utcTimeStr);
-                const time = new Date(`${dateStr}T${utcTimeStr}:00`).toISOString()
-                console.log('time',time);
-                console.log(startTime);
-                console.log(startTime.length);
-                console.log(cstToUtc(time));
+                const utcTimeStr = newNum.concat(`:${mins}`)
+             
+                // const time = new Date(`${dateStr}T${utcTimeStr}:00`).getTime()
+            
+                const fullDate = new Date(`${dateStr}T${utcTimeStr}:00`).toISOString()
+                const time = new Date(fullDate)
+                console.log(time, 'time');
+                
+                // console.log(cstToUtc(time));
+                setStart(time)
             }
 
         // } 
@@ -101,61 +180,119 @@ function Shifts({user}) {
         //    finishTime = utcTimeStr
         // }
 
-           if (finishAmPm === 'pm' && finishTime.length > 4 ) {
+         if (finishAmPm === 'pm' && finishTime.length > 4 ) {
+            setSelectedAmPm(true)
+
         const num = parseInt(finishTime.slice(0,2)) +12
                 console.log(num);
                 
                 const newNum = num.toString();
-                const utcTimeStr = newNum.concat(':00')
+                const mins = finishTime.slice(finishTime.length - 2);
+                const utcTimeStr = newNum.concat(`:${mins}`)
                 console.log(utcTimeStr);
-                const time = new Date(`${dateStr}T${utcTimeStr}:00`).toISOString()
+                // const time = new Date(`${dateStr}T${utcTimeStr}:00`).getTime()
+                const fullDate = new Date(`${dateStr}T${utcTimeStr}:00`).toISOString()
+                const time = new Date(fullDate)
                 console.log(time);
                 console.log(finishTime);
+                setFinish(time)
             //    console.log(finishTime);
             }else if (finishAmPm
                  === 'pm' && finishTime.length <= 4 ){
+                    setSelectedAmPm(true)
+
                      console.log(finishTime);
                     const number = parseInt(finishTime[0]) +12 
+                    const mins = finishTime.slice(finishTime.length - 2);
 
                     const newNumber = number.toString();
-                    const utcFinish = newNumber.concat(':00')
-                    console.log(number);
-                    console.log(newNumber);
+                    const utcFinish = newNumber.concat(`:${mins}`)
                     console.log(utcFinish);
-                const time = new Date(`${dateStr}T${utcFinish}:00`).toISOString()
-                console.log('time',time);
-                console.log(cstToUtc(time));
+                 
+                    // const time = new Date(`${dateStr}T${utcFinish}:00`).getTime()
+                    // console.log(fullDate.getTime());
+                const fullDate = new Date(`${dateStr}T${utcFinish}:00`).toISOString()
+                const time = new Date(fullDate)
+                console.log('time',time)
+                setFinish(time)
             }
 
 
 
         
-        if (startAmPm === 'am' && startTime.length >4) {
+         if (startAmPm === 'am' && startTime.length >4) {
       
-               
-            const time = new Date(`${dateStr}T${startTime}:00`).toISOString()
-            console.log('time',time);
-            console.log(startTime);
+            setSelectedAmPm(true)
+
+            const fullDate = new Date(`${dateStr}T${startTime}:00`).toISOString()
+            // const time = new Date(`${dateStr}T${startTime}:00`).getTime()
+      
+            const time = new Date(fullDate)
+            setStart(time)
             // console.log(startTime);
          }else if ( startAmPm === 'am' && startTime.length <= 4){
-             const time = new Date(`${dateStr}T0${startTime}:00`).toISOString()
-             console.log('time',time);
-             console.log(startTime);
-             console.log(cstToUtc(time));
+            setSelectedAmPm(true)
+
+            // const time = new Date(`${dateStr}T${startTime}:00`).getTime()
+            
+             const fullDate = new Date(`${dateStr}T0${startTime}:00`).toISOString()
+             const time = new Date(fullDate)
+      
+             setStart(time)
          }
 
         
 
-        if (finishAmPm === 'am' && finishTime.length >4) {
+         if (finishAmPm === 'am' && finishTime.length >4) {
+            setSelectedAmPm(true)
+
         
-               
-            const time = new Date(`${dateStr}T${finishTime}:00`).toISOString()
-            console.log('time',time);
-            console.log(utc(time));
+            // const time = new Date(`${dateStr}T${finishTime}:00`).getTime()  
+            const fullDate = new Date(`${dateStr}T${finishTime}:00`).toISOString()
+            const time = new Date(fullDate)
+            setFinish(time)
          }else if (finishAmPm === 'am' && finishTime.length <= 4) {
-             const time = new Date(`${dateStr}T0${finishTime}:00`).toISOString()
-             console.log('time',time);
+            setSelectedAmPm(true)
+
+            // const time = new Date(`${dateStr}T0${finishTime}:00`).getTime()
+             const fullDate = new Date(`${dateStr}T0${finishTime}:00`).toISOString()
+             const time = new Date(fullDate)
+             console.log(time, 'time2');
+             setFinish(time)
          }
+
+        //  if (start && finish) {
+        //     diff_minutes(finish, start, breakLength);
+        //     calculateShiftCost(hoursWorked, hourlyRate)
+        //  }
+        //  diff_minutes(finish, start, breakLength);
+        //  calculateShiftCost(hoursWorked, hourlyRate)
+         console.log(start);
+         console.log(finish);
+        //  if (start && finish) {
+        //      convertTime()
+        //  }
+
+         if (start && finish) {
+            diff_minutes(finish, start, breakLength);
+            calculateShiftCost(hoursWorked, hourlyRate)
+         }
+        
+        //  else {
+
+
+        //  }
+
+        //  if (start && finish) {
+        //     diff_minutes(finish, start, breakLength);
+        //     calculateShiftCost(hoursWorked, hourlyRate)
+        //     convertTime()
+        //  }
+
+        //  if (start && finish) {
+        //     diff_minutes(finish, start, breakLength);
+        //     calculateShiftCost(hoursWorked, hourlyRate)
+        //  }
 
         
    
@@ -171,9 +308,10 @@ function Shifts({user}) {
         //     console.log('time',time);
         //     console.log('hey');
         // }
-    
+           }
     }
 
+  
     // const formatAMPM = (date) => {
     //     // const date = new Date(shiftDate).toISOString()
 
@@ -197,14 +335,81 @@ function Shifts({user}) {
       
     //   console.log(formatAMPM(user.shifts.start));
 
+    // if (start && finish) {
+    //     convertTime()
+    // }
+    useEffect(() => {
+        convertTime()
+        // diff_minutes(finish, start, breakLength);
+        // calculateShiftCost(hoursWorked, hourlyRate)
+    },[startTime, finishTime, startAmPm,finishAmPm])
+
+    useEffect(() => {
+
+        diff_minutes(finish, start, breakLength);
+        // calculateShiftCost(hoursWorked, hourlyRate)
+
+    },[ start, finish]);
+    useEffect(() => {
+        calculateShiftCost(hoursWorked, hourlyRate)
+
+
+    },[hoursWorked])
     function createShift(e) {
         e.preventDefault()
+        // diff_minutes(finish, start, breakLength);
+        // diff_minutes(finish, start, breakLength);
+        // calculateShiftCost(hoursWorked, hourlyRate)
+        // convertTime()
+        //  diff_minutes(finish, start, breakLength);
+        // calculateShiftCost(hoursWorked, hourlyRate)
 
         // cstToUtc(startTime)
         // cstToUtc(finishTime)
+        // diff_minutes(finish, start, breakLength);
+        // calculateShiftCost(hoursWorked, hourlyRate)
+        // convertTime()
+
+        // convertTime()
+        if (start && finish) {
+            diff_minutes(finish, start, breakLength);
+
+            console.log('hi');
+            // diff_minutes(finish, start, breakLength);
+            // calculateShiftCost(hoursWorked, hourlyRate)
+            // convertTime()
+            fetch('/api/shifts', {
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json"
+                },
+                body: JSON.stringify({
+                    start,
+                    finish,
+                    break_length: breakLength
+                })
+            })
+            
+            .then((r) => {
+                if(r.ok) {
+                  console.log(r);
+                }else {
+                    r.json().then((error)=> {
+                        setErrors(error.errors)
+                    });
+                }
+            });
+         }
 
 
-    convertTime()
+        console.log(start);
+        console.log(finish);
+        // diff_minutes(finish, start, breakLength);
+        // calculateShiftCost(hoursWorked, hourlyRate)
+        
+        // console.log(start, finish, 'THIS');
+        // calculateHours(start, finish)
+        // calculateHours(start.getHours(), finish.getHours())
         // const date = new Date()
         // const start =  convertTime(startTime);
         // const finish = convertTime(finishTime);
@@ -257,10 +462,11 @@ function Shifts({user}) {
 
     return(
         <div>
-            {/* <form> */}
+            <form type='submit'>
                 <table>
-                   
-                        <tr>
+                   <thead>
+                       <tr>
+                        
                             <th>Employee name</th>
                             <th>Shift date</th>
                             <th>Start time</th>
@@ -269,18 +475,23 @@ function Shifts({user}) {
                             <th>Hours worked</th>
                             <th>Shift cost</th>
                         </tr>
-
-                    <tr>
-                        <td>{user.username}</td>
-                        <td>{shiftDate}</td>
-                        <td>{startTime}</td>
-                        <td>{finishTime}</td>
-                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{user.username}</td>
+                            <td>{shiftDate}</td>
+                            <td>{startTime} {startAmPm}</td>
+                            <td>{finishTime} {finishAmPm}</td>
+                            <td>{breakLength}</td>
+                            
+                            <td>{hoursWorked}</td>
+                            <td>{shiftCost}</td>
+                        </tr>
+                    </tbody>
 
 
                    
                 </table>
-             <form type='submit'>
                     date
                     <input 
                     type='text'
@@ -299,7 +510,10 @@ function Shifts({user}) {
                         
                      </input>
                      <select value={startAmPm} onChange={(e) => setStartAmPm(e.target.value)}>
-                            <option value='am'>am</option>
+                            <option value="" defaultValue disabled hidden>AM/PM</option>
+
+                            <option 
+                            value='am' >am</option>
                             <option value='pm'>pm</option>
 
                         </select>
@@ -307,15 +521,30 @@ function Shifts({user}) {
                      finish time
                      <input 
                     type='text'
-                    value={finishTime}
+                    value={finishTime} 
                     onChange={(e) => setFinishTime(e.target.value)}
                     >
                      </input>
                      <select value={finishAmPm} onChange={(e) => setFinishAmPm(e.target.value)}>
+                            <option value="" defaultValue disabled hidden>AM/PM</option>
+
                             <option value='am'>am</option>
-                            <option value='pm'>pm</option>
+                            <option value='pm' >pm</option>
 
                         </select>
+
+                    <input 
+                    type='text'
+                    value={breakLength}
+                    onChange={(e) => setBreakLength(e.target.value)}
+                    >
+                    </input>
+                    {/* <input 
+                    type='text'
+                    value={shiftCost}
+                    onChange={(e) => setShiftCost(e.target.value)}
+                    >
+                    </input> */}
                   
                     {/* <input 
                     type='text'
@@ -345,6 +574,9 @@ function Shifts({user}) {
                 <button onClick={createShift}>Create Shift</button>
             
             </form>
+            {errors ? errors.map((error) => (
+                <li key={error}>{error}</li>
+            )) : null}
 
 
         </div>

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 function OrgPage({user, organization, selectedOrg,selectOrg}) {
 
-console.log(selectedOrg);
+// console.log(selectedOrg);
 // console.log(organization);
 console.log(user);
 const [joined, setJoined] = useState(false);

@@ -20,7 +20,6 @@ function App() {
       setSelectedOrg(orgObj)
   }
 
-  console.log(user);
 
   useEffect(() => {
     fetch('/api/me').then((r) => {

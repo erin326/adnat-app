@@ -3,7 +3,7 @@ import LoginForm from '../components/LoginForm';
 import SignupForm from '../components/SignupForm';
 import { Button } from 'semantic-ui-react'
 
-function Login({ onLogin }) {
+function LoginPage({ onLogin }) {
 
     const [showLoginForm, setShowLoginForm] = useState(true)
 
@@ -16,9 +16,9 @@ function Login({ onLogin }) {
                 
                 <LoginForm onLogin={onLogin}/>
                 <h3>Don't have an account? 
-                    <Button
+                    <button
                     onClick={() => setShowLoginForm(false)}> Sign Up
-                    </Button>
+                    </button>
                 </h3>
       
                 </>
@@ -29,9 +29,9 @@ function Login({ onLogin }) {
                 <br></br>
                 <p>
                     Already have an account? 
-                    <Button onClick={() => setShowLoginForm(true)}>
+                    <button onClick={() => setShowLoginForm(true)}>
                         Log In
-                    </Button>
+                    </button>
                 </p>
                 
                 </>
@@ -43,4 +43,4 @@ function Login({ onLogin }) {
 
 
 
-export default Login;
+export default LoginPage;

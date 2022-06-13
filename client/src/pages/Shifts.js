@@ -4,11 +4,13 @@ import { useEffect } from 'react';
 
 
 
-function Shifts({user}) {
+function Shifts({user, selectedOrg}) {
 
     const [allShifts, setAllShifts] = useState([]);
 
-    const hourlyRate = user.organization.hourly_rate;
+    const [organization, setOrganization] = useState({});
+
+    // let hourlyRate = user.organization.hourly_rate;
     // console.log(hourlyRate);
     const [start, setStart] = useState('')
     const [finish, setFinish] = useState('')
@@ -27,8 +29,17 @@ function Shifts({user}) {
 
     const [errors, setErrors] = useState([])
     
+    console.log(selectedOrg)
+    ;
 
     // console.log(user);
+    useEffect(() => {
+        fetch(`/api/organizations/${user.organization.id}`)
+        .then((r) => r.json())
+        .then((data) => setOrganization(data))
+
+    },[])
+    const hourlyRate = organization.hourly_rate
 
     useEffect(() => {
         fetch('/api/shifts')
@@ -37,6 +48,9 @@ function Shifts({user}) {
 
     },[])
     console.log(allShifts);
+    console.log(user.organization);
+
+
 
     // const shifts = allShifts.map((shift) =>(
 
@@ -316,7 +330,8 @@ function Shifts({user}) {
                     finish,
                     break_length: breakLength,
                     hours_worked: hoursWorked,
-                    shift_cost: shiftCost
+                    shift_cost: shiftCost,
+                    organization_id: user.organization.id
                 })
             })
             

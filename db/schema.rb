@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_12_233056) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_13_014042) do
   create_table "organizations", force: :cascade do |t|
     t.string "name"
     t.integer "hourly_rate"
@@ -27,6 +27,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_12_233056) do
     t.datetime "updated_at", null: false
     t.decimal "hours_worked", precision: 5, scale: 2
     t.decimal "shift_cost", precision: 5, scale: 2
+    t.integer "organization_id"
   end
 
   create_table "users", force: :cascade do |t|

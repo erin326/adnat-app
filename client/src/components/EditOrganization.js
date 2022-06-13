@@ -1,23 +1,48 @@
 import {useState} from 'react';
 import { useEffect } from 'react'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, useLocation} from 'react-router-dom'
+
 
 function EditOrganization({user,  selectedOrg}) {
 
-  
+    const [organization, setOrganization] = useState({});
+    const location = useLocation()
+    const {from } = location.state
+
+    // useEffect(() => {
+    //     fetch(`/api/organizations/${user.organization.id}`)
+    //     .then((r) => r.json())
+    //     .then((data) => setOrganization(data))
+
+    // },[user.organization])
+
+  let org;
+  if (!user.organization) {
+        org = selectedOrg
+    
+      console.log('selected');
+  } else{
+    // fetch(`/api/organizations/${user.organization.id}`)
+    // .then((r) => r.json())
+    // .then((data) => setOrganization(data))
+     org = user.organization
+      console.log('notselected');
+  }
     const [errors, setErrors] = useState([]);
+    console.log(user.organization);
 
   
-    const [name, setName] = useState(selectedOrg.name)
-    const [hourlyRate, setHourlyRate] = useState(selectedOrg.hourly_rate);
+    const [name, setName] = useState(org.name)
+    const [hourlyRate, setHourlyRate] = useState('');
 
     const navigate = useNavigate();
 
 
     function handleUpdateOrg(e){
         e.preventDefault();
+      
         
-        fetch(`/api/organizations/${selectedOrg.id}`, {
+        fetch(`/api/organizations/${org.id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type" : "application/json"
@@ -34,10 +59,10 @@ function EditOrganization({user,  selectedOrg}) {
     
     }
 
-    console.log(selectedOrg);
+    console.log(org);
  
     function handleDeleteOrg() {
-        fetch(`/api/organizations/${selectedOrg.id}`, {
+        fetch(`/api/organizations/${org.id}`, {
             method: "DELETE"
         })
         navigate('/')
@@ -47,7 +72,7 @@ function EditOrganization({user,  selectedOrg}) {
 
     // function handleUpdateSubmit(e){
     //     e.preventDefault()
-    //     fetch(`api/organizations/${organization.id}`, {
+    //     fetch(`api/anorganizationanizations/${organization.id}`, {
     //         method: "PATCH",
     //         headers: {
     //             "Content-Type" : "application/json"

@@ -4,7 +4,7 @@ class Api::ShiftsController < ApplicationController
         user = User.find_by(id: session[:user_id])
         # zone = ActiveSupport::TimeZone.new("Central Time (US & Canada)")
      
-        shifts = user.shifts
+        shifts = user.organization.shifts
         # start = shifts.map do |s| 
         #     s.start.in_time_zone(zone)
         #     s.finish.in_time_zone(zone)
@@ -25,6 +25,7 @@ class Api::ShiftsController < ApplicationController
 
             shift = Shift.create(shift_params)
             user.shifts << shift
+            # user.organization.shifts << shift
             if shift.valid?
                 render json: shift, status: :created
             else
@@ -39,7 +40,7 @@ class Api::ShiftsController < ApplicationController
     private
 
     def shift_params
-        params.permit(:start, :finish, :break_length, :hours_worked, :shift_cost, :user_id)
+        params.permit(:start, :finish, :break_length, :hours_worked, :shift_cost, :user_id, :organization_id)
     end
 
 

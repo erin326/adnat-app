@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 function OrgPage({user, organization, selectedOrg,selectOrg}) {
 
-// console.log(selectedOrg);
-// console.log(organization);
+console.log(selectOrg);
+console.log(organization);
 console.log(user);
 const [joined, setJoined] = useState(false);
 
@@ -15,6 +15,9 @@ const [joined, setJoined] = useState(false);
 
    const navigate = useNavigate()
 
+//    useEffect(() => {
+//     selectOrg(user.organization)
+//    },[])
 
 //    const location = useLocation()
 //    const {from}  = location.state
@@ -82,8 +85,8 @@ const [joined, setJoined] = useState(false);
             {user.organization ?    <div>
             <h2>{user.organization.name}</h2>
             <Link to={'/shifts/' + user.organization.id}>View Shifts </Link>
-            <Link to={"/edit/" + user.organization.id} > Edit </Link>
-            <Link onClick={leaveOrg} to='/leave'> Leave </Link>
+            <Link state={{from: "user.organization"}} to={"/edit/" + user.organization.id} > Edit </Link>
+            <Link  onClick={leaveOrg} to='/leave'> Leave </Link>
            
             </div> :null }
           

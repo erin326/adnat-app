@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react';
 
 
 function OrganizationCard({user, organization, onUpdateOrg, onJoin, selectOrg, selectedOrg}) {
+    console.log(organization);
 
     const navigate = useNavigate();
     // const [org, setOrg] = useState({})

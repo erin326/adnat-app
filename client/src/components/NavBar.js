@@ -1,7 +1,9 @@
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 
 
 function NavBar({user, setUser}) {
+
+    const navigate = useNavigate()
 
     function handleLogout(){
         fetch('/api/logout', {
@@ -9,6 +11,8 @@ function NavBar({user, setUser}) {
         }).then((r) => {
             if (r.ok) {
                 setUser(null)
+            
+
             }
         })
     }

@@ -6,6 +6,7 @@ import HomePage from './HomePage';
 import EditOrganization from './EditOrganization';
 import OrgPage from '../pages/OrgPage';
 import Shifts from '../pages/Shifts';
+// import PasswordReset from './PasswordReset';
 
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
       setSelectedOrg(orgObj)
   }
 
-
+console.log(user);
   useEffect(() => {
     fetch('/api/me').then((r) => {
         if (r.ok) {
@@ -36,6 +37,7 @@ if (!user) return <LoginPage  onLogin={setUser} />;
     <div className="App">
       <NavBar user={user} setUser={setUser}/>
       <Routes>
+        {/* <Route exact path='/password_reset' element={<PasswordReset  />}></Route> */}
         <Route exact path='/edit/:id' element={<EditOrganization  selectedOrg={selectedOrg} user={user} />}></Route>
         <Route exact path='/join/:id' element={<OrgPage  selectedOrg={selectedOrg}selectOrg={selectOrg} user={user}  />}></Route>
         <Route exact path='/leave' element={<HomePage user={user}/>}></Route>

@@ -39,7 +39,7 @@ function ShiftCard({shift, hoursWorked, shiftCost}) {
             <td>{finishTime}</td>
             <td>{shift.break_length}</td>
             <td>{hoursWorked}</td>
-            <td>{shiftCost}</td>
+            <td>${shiftCost}</td>
 
         </tr>
     )

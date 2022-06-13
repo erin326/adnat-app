@@ -44,6 +44,8 @@ gem "bootsnap", require: false
 
 gem 'active_model_serializers'
 
+gem 'figaro'
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 

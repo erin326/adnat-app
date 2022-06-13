@@ -1,13 +1,13 @@
 import {useState} from 'react';
 import { useEffect } from 'react'
-import {useNavigate, useLocation} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 
 
 function EditOrganization({user,  selectedOrg}) {
 
-    const [organization, setOrganization] = useState({});
-    const location = useLocation()
-    const {from } = location.state
+    // const [organization, setOrganization] = useState({});
+    // const location = useLocation()
+    // const {from } = location.state
 
     // useEffect(() => {
     //     fetch(`/api/organizations/${user.organization.id}`)
@@ -105,10 +105,12 @@ function EditOrganization({user,  selectedOrg}) {
                 type='text'
                 value={hourlyRate}
                 onChange={(e)=> setHourlyRate(e.target.value)}
-                ></input>
+                ></input>per hour
+                <br></br>
                 <button type='submit'>Update</button>
             </form>
 
+            <br></br>
             <button onClick={handleDeleteOrg}>Delete</button>
 
         </div>

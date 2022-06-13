@@ -39,7 +39,7 @@ class Api::ShiftsController < ApplicationController
     private
 
     def shift_params
-        params.permit(:start, :finish, :break_length, :user_id)
+        params.permit(:start, :finish, :break_length, :hours_worked, :shift_cost, :user_id)
     end
 
 

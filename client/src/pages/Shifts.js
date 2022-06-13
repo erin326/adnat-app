@@ -322,7 +322,12 @@ function Shifts({user}) {
             
             .then((r) => {
                 if(r.ok) {
-                  console.log(r);
+                  r.json()
+                  .then((shift) => {
+                      const updatedShiftsList = [...allShifts, shift]
+                      setAllShifts(updatedShiftsList)
+                  })
+               
                 }else {
                     r.json().then((error)=> {
                         setErrors(error.errors)

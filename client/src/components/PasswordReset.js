@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-function PasswordReset({user, setPasswordResetSuccess, setShowPasswordReset}) {
+function PasswordReset({setPasswordResetSuccess, setShowPasswordReset}) {
 
     const [email, setEmail] = useState('');
 
@@ -13,9 +13,7 @@ function PasswordReset({user, setPasswordResetSuccess, setShowPasswordReset}) {
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
     const [errors, setErrors] = useState([]);
-    const [message, setMessage] = useState('')
-
-    const navigate = useNavigate()
+ 
 
 
     function handleSubmitTokenSend(e) {
@@ -62,10 +60,7 @@ function PasswordReset({user, setPasswordResetSuccess, setShowPasswordReset}) {
             if(r.ok)  {
                 setPasswordResetSuccess(true)
                 setShowPasswordReset(false)
-            
-
-                // setMessage('Password reset successful!  Please login with your new password.')
-                
+           
              
             }else{
                 r.json().then((err) => setErrors(err.errors))
@@ -126,14 +121,9 @@ function PasswordReset({user, setPasswordResetSuccess, setShowPasswordReset}) {
         </form>
 
         </>
-        :null }
+        : null }
 
         {showTokenInput ? <p>Please check your email for a password reset token.</p> : null}
-
-        {/* {message ? message : null}
-         */}
-     
-
 
 
         {errors ? errors.map((err) => (<p>{err}</p>)) 

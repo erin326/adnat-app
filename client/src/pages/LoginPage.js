@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import LoginForm from '../components/LoginForm';
 import SignupForm from '../components/SignupForm';
-import { Button } from 'semantic-ui-react'
-import {Link} from 'react-router-dom'
 import PasswordReset from '../components/PasswordReset'
 
 
@@ -13,8 +11,6 @@ function LoginPage({ onLogin }) {
 
     const [passwordResetSuccess, setPasswordResetSuccess] = useState(false)
 
-    // showPasswordReset ? setShowPasswordReset(!showPasswordReset) : setShowPasswordReset(showPasswordReset)
-    // showPasswordReset === true ? setShowPasswordReset(!showPasswordReset) : setShowPasswordReset(false)
 
     return (
         <div className='login-page'>
@@ -31,8 +27,6 @@ function LoginPage({ onLogin }) {
                 </h3>
                 <button onClick={() => setShowPasswordReset(true)}>Forgot your password?</button>
 
-                
-      
                 </>
 
             ) : (
@@ -45,23 +39,15 @@ function LoginPage({ onLogin }) {
                         Log In
                     </button>
                 </p>
-                
-        
-         
-                
+  
                 </>
-
-                
+  
             )}
             
             {showPasswordReset ? 
           
-                    <PasswordReset 
-
-                    passwordResetSuccess={passwordResetSuccess} setPasswordResetSuccess={setPasswordResetSuccess}
-                    setShowLoginForm={setShowLoginForm} showLoginForm={showLoginForm}
+                    <PasswordReset  setPasswordResetSuccess={setPasswordResetSuccess}
                     setShowPasswordReset={setShowPasswordReset}/>
-                  
                      : null
                 }
 

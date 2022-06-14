@@ -29,7 +29,6 @@ function Shifts({user, selectedOrg}) {
 
     const [errors, setErrors] = useState([])
     
-    console.log(selectedOrg)
     ;
 
     // console.log(user);
@@ -47,8 +46,7 @@ function Shifts({user, selectedOrg}) {
         .then((data) => setAllShifts(data))
 
     },[])
-    console.log(allShifts);
-    console.log(user.organization);
+   
 
 
 
@@ -73,7 +71,8 @@ function Shifts({user, selectedOrg}) {
     //     <ShiftCard key={shift.id} shift={shift} hoursWorked={hoursWorked} shiftCost={shiftCost} />
     // ))
  
-    const test = new Date('2022-06-12T22:00:00.000Z');
+    const test = new Date('2022-06-12T12:00:00.000Z');
+    console.log(test); 
 
     function diff_minutes(dt2, dt1, breakLength)  {
         let minutes; 
@@ -97,7 +96,9 @@ function Shifts({user, selectedOrg}) {
         //     setHoursWorked(`${hours}:${mins}`)
         // }
         const minuteDecimal = Math.round(mins  * 100) / 60;
-        setHoursWorked(parseFloat(`${hours}.${minuteDecimal}`))
+        const hournum = parseFloat(hours)
+        const minNum = parseFloat(minuteDecimal)
+        setHoursWorked(parseFloat(`${hournum}.${minNum}`))
         console.log(typeof(hoursWorked))
         // if(hoursWorked) {
         //     calculateShiftCost(hoursWorked, hourlyRate)
@@ -134,166 +135,56 @@ function Shifts({user, selectedOrg}) {
           console.log(string);
 
     }
-    console.log(test)
+    // console.log(test)
     const tester = new Date(
-        new Date("2021-01-01T22:00:00")
+        new Date("6/9/2022, 4:00 pm")
           .toLocaleString("en-US", {timeZone: "CST"})
       ).toISOString();
         // console.log(tester);
 
 
     function convertTime(timeObj) {
-        if(startTime && finishTime) {
+        if(startTime && finishTime && finishAmPm &&startAmPm) {
 
-      
-        const date = new Date(shiftDate).toISOString()
-
-        const dateStr = date.slice(0, 10)
-
-            if (startAmPm === 'pm' && startTime.length > 4 ) {
-              
-                // console.log(cstToUtc(time));
-                const num = parseInt(startTime.slice(0,2)) +12
-                console.log(num);
-                console.log(shiftDate, startTime);
-                
-                const newNum = num.toString();
-                const mins = startTime.slice(startTime.length - 2);
-                const utcTimeStr = newNum.concat(`:${mins}`)
-                // console.log(utcTimeStr);
-                // const time = new Date(`${dateStr}T${utcTimeStr}:00`).getHours()
-                const fullDate = new Date(`${dateStr}T${utcTimeStr}:00`).toISOString()
-                // console.log(time, 'HI');
-                // console.log(startTime);
-                const time = new Date(fullDate)
-                setStart(time)
-                // startTime = utcTimeStr
-            
-            
-                // console.log(cstToUtc(time));
-            
-            }else if (startAmPm === 'pm' && startTime.length <= 4) {
-                setSelectedAmPm(true)
-
-                const num = parseInt(startTime[0]) +12 
-                const mins = startTime.slice(startTime.length - 2);
-                const newNum = num.toString();
-                const utcTimeStr = newNum.concat(`:${mins}`)
-             
-                // const time = new Date(`${dateStr}T${utcTimeStr}:00`).getTime()
-            
-                const fullDate = new Date(`${dateStr}T${utcTimeStr}:00`).toISOString()
-                const time = new Date(fullDate)
-                // console.log(time, 'time');
-                
-                // console.log(cstToUtc(time));
-                setStart(time)
-            }
+            // console.log(new Date(`${shiftDate}, ${startTime} ${startAmPm}`));
+            // console.log(new Date(`${shiftDate}, ${finishTime} ${finishAmPm}`));
 
 
-         if (finishAmPm === 'pm' && finishTime.length > 4 ) {
-            setSelectedAmPm(true)
+            const startFullDate = new Date(`${shiftDate}, ${startTime} ${startAmPm}`).toLocaleString("en-US", {timeZone: "CST"})
 
-        const num = parseInt(finishTime.slice(0,2)) +12
-                console.log(num);
-                
-                const newNum = num.toString();
-                const mins = finishTime.slice(finishTime.length - 2);
-                const utcTimeStr = newNum.concat(`:${mins}`)
-                // console.log(utcTimeStr);
-                // const time = new Date(`${dateStr}T${utcTimeStr}:00`).getTime()
-                const fullDate = new Date(`${dateStr}T${utcTimeStr}:00`).toISOString()
-                const time = new Date(fullDate)
-                // console.log(time);
-                // console.log(finishTime);
-                setFinish(time)
-            //    console.log(finishTime);
-            }else if (finishAmPm
-                 === 'pm' && finishTime.length <= 4 ){
-                    setSelectedAmPm(true)
+            const finishFullDate = new Date(`${shiftDate}, ${finishTime} ${finishAmPm}`).toLocaleString("en-US", {timeZone: "CST"})
+            console.log(startFullDate);
+            console.log(finishFullDate);
+            const startStr = new Date(startFullDate)
+            const finishStr = new Date(finishFullDate)
 
-                    //  console.log(finishTime);
-                    const number = parseInt(finishTime[0]) +12 
-                    const mins = finishTime.slice(finishTime.length - 2);
-
-                    const newNumber = number.toString();
-                    const utcFinish = newNumber.concat(`:${mins}`)
-                    // console.log(utcFinish);
-                 
-                    // const time = new Date(`${dateStr}T${utcFinish}:00`).getTime()
-                    // console.log(fullDate.getTime());
-                const fullDate = new Date(`${dateStr}T${utcFinish}:00`).toISOString()
-                const time = new Date(fullDate)
-                // console.log('time',time)
-                setFinish(time)
-            }
-
-
-
+            setStart(startStr)
+            setFinish(finishStr)
+   
         
-         if (startAmPm === 'am' && startTime.length >4) {
-      
-            setSelectedAmPm(true)
-
-            const fullDate = new Date(`${dateStr}T${startTime}:00`).toISOString()
-            // const time = new Date(`${dateStr}T${startTime}:00`).getTime()
-      
-            const time = new Date(fullDate)
-            setStart(time)
-            // console.log(startTime);
-         }else if ( startAmPm === 'am' && startTime.length <= 4){
-            setSelectedAmPm(true)
-
-            // const time = new Date(`${dateStr}T${startTime}:00`).getTime()
-            
-             const fullDate = new Date(`${dateStr}T0${startTime}:00`).toISOString()
-             const time = new Date(fullDate)
-      
-             setStart(time)
-         }
-
-        
-
-         if (finishAmPm === 'am' && finishTime.length >4) {
-            setSelectedAmPm(true)
-
-        
-            // const time = new Date(`${dateStr}T${finishTime}:00`).getTime()  
-            const fullDate = new Date(`${dateStr}T${finishTime}:00`).toISOString()
-            const time = new Date(fullDate)
-            setFinish(time)
-         }else if (finishAmPm === 'am' && finishTime.length <= 4) {
-            setSelectedAmPm(true)
-
-            // const time = new Date(`${dateStr}T0${finishTime}:00`).getTime()
-             const fullDate = new Date(`${dateStr}T0${finishTime}:00`).toISOString()
-             const time = new Date(fullDate)
-             console.log(time, 'time2');
-             setFinish(time)
-         }
-
-        //  console.log(start);
-        //  console.log(finish);
-
-
-        //  if (start && finish) {
-        //     diff_minutes(finish, start, breakLength);
-        //     calculateShiftCost(hoursWorked, hourlyRate)
-        //  }
-        
-
         }
-        
 
+        // if(start && finish && breakLength) {
+        //     diff_minutes(finish, start, breakLength)
+        // }
+        // else if(start&& finish) {
+        //     diff_minutes(finish, start, breakLength)
+        // }
+
+        // if(hoursWorked) {
+        //     calculateShiftCost(hoursWorked, hourlyRate)
+        // }
 
     }
+    console.log(start);
+    console.log(finish);
 
 
     useEffect(() => {
         convertTime()
         // diff_minutes(finish, start, breakLength);
         // calculateShiftCost(hoursWorked, hourlyRate)
-    },[startTime, finishTime, startAmPm,finishAmPm])
+    },[start, finish, hoursWorked])
 
     useEffect(() => {
 
@@ -308,12 +199,13 @@ function Shifts({user, selectedOrg}) {
     },[hoursWorked])
     function createShift(e) {
         e.preventDefault()
+        
         // diff_minutes(finish, start, breakLength);
         // calculateShiftCost(hoursWorked, hourlyRate)
 
 
-        console.log(shiftCost);
-        console.log(hoursWorked);
+        // console.log(shiftCost);
+        // console.log(hoursWorked);
         
 
         if (start && finish) {
@@ -337,6 +229,11 @@ function Shifts({user, selectedOrg}) {
             
             .then((r) => {
                 if(r.ok) {
+                    setShiftDate('');
+                    setStartTime('');
+                    setFinishTime('');
+                    setBreakLength('');
+                    
                   r.json()
                   .then((shift) => {
                       const updatedShiftsList = [...allShifts, shift]

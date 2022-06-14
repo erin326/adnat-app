@@ -24,19 +24,13 @@ class Api::OrganizationsController < ApplicationController
         user = User.find_by(id: session[:user_id])
         organization = Organization.find(params[:id])
         organization.update(organization_params)
-        # organization.users << user
         render json: organization
     end
 
     def join
         user = User.find_by(id: session[:user_id])
         organization = Organization.find(params[:id])
-        # user.update(params[:conversation_id])
-        # user.organization = organization
-        # organization.users << user
-
-        # user.organization_id = organization.id
-        # organization.users << user
+    
         permitted = params.permit(:organization_id)
         user.update(permitted)
 

@@ -1,9 +1,11 @@
-import {Link, useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
 
 function NavBar({user, setUser}) {
 
     const navigate = useNavigate()
+
 
     function handleLogout(){
         fetch('/api/logout', {
@@ -11,18 +13,15 @@ function NavBar({user, setUser}) {
         }).then((r) => {
             if (r.ok) {
                 setUser(null)
-            
-
+                navigate('/')
+                
             }
         })
     }
 
     return(
         <>
-         
-             <h1><Link to='/'>Adnat</Link></h1>
-      
-       
+        <h1><Link to='/'>Adnat</Link></h1>
         <nav>
             <p>Logged in as {user.username}</p>
             <button id='logout-button' onClick={handleLogout}>Logout</button>

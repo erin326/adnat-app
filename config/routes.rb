@@ -3,9 +3,13 @@ Rails.application.routes.draw do
 
   namespace :api do 
 
-    resources :organizations, only: [:index, :create, :update, :show, :destroy]
-    resources :users, only: [:update]
+    resources :organizations, only: [:index, :create, :update, :show, :destroy] 
     resources :shifts, only: [:index, :show, :create]
+
+    
+
+    resources :users, only: [:update]
+    # resources :shifts, only: [:index, :show, :create]
 
     patch '/join/:id', to: 'organizations#join'
     post '/signup', to: 'users#create'

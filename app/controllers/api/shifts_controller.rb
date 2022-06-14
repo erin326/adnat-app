@@ -2,30 +2,20 @@ class Api::ShiftsController < ApplicationController
 
     def index
         user = User.find_by(id: session[:user_id])
-        # zone = ActiveSupport::TimeZone.new("Central Time (US & Canada)")
      
         shifts = user.organization.shifts
-        # start = shifts.map do |s| 
-        #     s.start.in_time_zone(zone)
-        #     s.finish.in_time_zone(zone)
-            
-        # end
-        # start = shifts.all.map{|s| s.convert_time}
+        
+        ordered_shifts = shifts.order(:start)
 
-      
-
-        render json: shifts
+        render json: ordered_shifts
     end
 
     def create
         user = User.find_by(id: session[:user_id])
 
- 
         if user 
-
             shift = Shift.create(shift_params)
             user.shifts << shift
-            # user.organization.shifts << shift
             if shift.valid?
                 render json: shift, status: :created
             else

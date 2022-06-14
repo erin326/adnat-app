@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom'
 
 function SignUpForm({onLogin}) {
    
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
@@ -22,7 +21,6 @@ function SignUpForm({onLogin}) {
                 email_address: emailAddress,
                 password,
                 password_confirmation: passwordConfirmation,
-            
             }),
         }).then((r) => {
             if (r.ok) {
@@ -54,7 +52,6 @@ function SignUpForm({onLogin}) {
             ></input>
             <br></br>
             <label>Password (<em>6 characters minimum</em>): </label>
-            
             <input
             type="password"
             id='password'
@@ -74,7 +71,6 @@ function SignUpForm({onLogin}) {
 
             {errors ? errors.map((err) => (<p>{err}</p>)) 
           : null}
-          
         </form>
     )
 }

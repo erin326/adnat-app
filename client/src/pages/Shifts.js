@@ -2,16 +2,11 @@ import ShiftCard from '../components/ShiftCard'
 import {useState} from 'react';
 import { useEffect } from 'react';
 
-
-
-function Shifts({user, selectedOrg}) {
+function Shifts({user}) {
 
     const [allShifts, setAllShifts] = useState([]);
-
     const [organization, setOrganization] = useState({});
 
-    // let hourlyRate = user.organization.hourly_rate;
-    // console.log(hourlyRate);
     const [start, setStart] = useState('')
     const [finish, setFinish] = useState('')
     
@@ -21,197 +16,90 @@ function Shifts({user, selectedOrg}) {
 
     const [startAmPm, setStartAmPm] = useState('');
     const [finishAmPm, setFinishAmPm] = useState('');
-    const [selectedAmPm, setSelectedAmPm] = useState(false)
-
     const [breakLength, setBreakLength] = useState('');
     const [hoursWorked, setHoursWorked] = useState('');
     const [shiftCost, setShiftCost] = useState('');
+    const [errors, setErrors] = useState([]);
 
-    const [errors, setErrors] = useState([])
-    
-    ;
-
-    // console.log(user);
     useEffect(() => {
         fetch(`/api/organizations/${user.organization.id}`)
         .then((r) => r.json())
-        .then((data) => setOrganization(data))
+        .then((data) => {
+            setOrganization(data)
 
-    },[])
+        })
+
+    },[]);
+  
+
     const hourlyRate = organization.hourly_rate
 
     useEffect(() => {
         fetch('/api/shifts')
         .then((r) => r.json())
         .then((data) => setAllShifts(data))
-
     },[])
    
-
-
-
-    // const shifts = allShifts.map((shift) =>(
-
-    //     // const startDate = new Date(shift.start);
-    //     // const finishDate = new Date(shift.finish);
-    //     // console.log(startDate.getHours(), startDate.getMinutes(), startDate.getDate());
-    //     // const cstStart = centralDateTime(startDate)
-    //     // const cstFinish = centralDateTime(finishDate)
-    //     <>
-    //     <td>{centralDateTime(shift.start)}</td>
-    //     <td>{centralDateTime(shift.finish)}</td>
-    //     </>
-
-    
-    // // console.log(cstDate);
-
-    //     // console.log(finishDate);
-    // ))
-    // const displayShifts = allShifts.map((shift) => (
-    //     <ShiftCard key={shift.id} shift={shift} hoursWorked={hoursWorked} shiftCost={shiftCost} />
-    // ))
- 
-    const test = new Date('2022-06-12T12:00:00.000Z');
-    console.log(test); 
-
     function diff_minutes(dt2, dt1, breakLength)  {
+       
+  
         let minutes; 
         if(breakLength) {
             minutes = (dt2 - dt1) / (1000 * 60) - breakLength
         } else{
             minutes = (dt2 - dt1) / (1000 * 60)
         }
-        // console.log(minutes);
-        // console.log(dt2, 'finish time');
-        // console.log(dt1, 'start time');
         const mins = minutes % 60
-        // console.log(mins);
-
-
         const hours = Math.floor(minutes / 60)
-        // console.log(hours);
-        // if (mins < 10 ) {
-        //     setHoursWorked(`${hours}:0${mins}`)
-        // } else{
-        //     setHoursWorked(`${hours}:${mins}`)
-        // }
         const minuteDecimal = Math.round(mins  * 100) / 60;
         const hournum = parseFloat(hours)
         const minNum = parseFloat(minuteDecimal)
         setHoursWorked(parseFloat(`${hournum}.${minNum}`))
-        console.log(typeof(hoursWorked))
-        // if(hoursWorked) {
-        //     calculateShiftCost(hoursWorked, hourlyRate)
 
-        // }
+        if(hoursWorked) {
+            calculateShiftCost(hoursWorked, hourlyRate)
 
-
-        // console.log(hoursWorked);
-              // console.log(`${padTo2Digits(hours)}:${padTo2Digits(mins)}hiiiiii`);
+        }
     }
-
-
-    // console.log(shiftCost);
 
     function calculateShiftCost(hoursWorked, hourlyRate) {
        const total =  hoursWorked * hourlyRate
-        console.log(hoursWorked);
        setShiftCost(total)
-        console.log(shiftCost);
-        
     }
 
-    function centralDateTime(date) {
-        const string = date.toLocaleString('en-US', {
-            timeZone: 'CST',
-          })
-          console.log(string);
 
-    }
-    function utc(date) {
-        const string = date.toLocaleString('en-US', {
-            timeZone: 'UTC',
-          })
-          console.log(string);
-
-    }
-    // console.log(test)
-    const tester = new Date(
-        new Date("6/9/2022, 4:00 pm")
-          .toLocaleString("en-US", {timeZone: "CST"})
-      ).toISOString();
-        // console.log(tester);
-
-
-    function convertTime(timeObj) {
+    function convertTime() {
         if(startTime && finishTime && finishAmPm &&startAmPm) {
-
-            // console.log(new Date(`${shiftDate}, ${startTime} ${startAmPm}`));
-            // console.log(new Date(`${shiftDate}, ${finishTime} ${finishAmPm}`));
-
-
             const startFullDate = new Date(`${shiftDate}, ${startTime} ${startAmPm}`).toLocaleString("en-US", {timeZone: "CST"})
-
             const finishFullDate = new Date(`${shiftDate}, ${finishTime} ${finishAmPm}`).toLocaleString("en-US", {timeZone: "CST"})
-            console.log(startFullDate);
-            console.log(finishFullDate);
             const startStr = new Date(startFullDate)
             const finishStr = new Date(finishFullDate)
 
             setStart(startStr)
             setFinish(finishStr)
-   
-        
+        } else{ 
+            setStart('')
+            setFinish('')
+
         }
 
-        // if(start && finish && breakLength) {
-        //     diff_minutes(finish, start, breakLength)
-        // }
-        // else if(start&& finish) {
-        //     diff_minutes(finish, start, breakLength)
-        // }
+        if(start && finish) {
+            diff_minutes(finish, start, breakLength)
 
-        // if(hoursWorked) {
-        //     calculateShiftCost(hoursWorked, hourlyRate)
-        // }
+        }
 
     }
-    console.log(start);
-    console.log(finish);
-
 
     useEffect(() => {
         convertTime()
-        // diff_minutes(finish, start, breakLength);
-        // calculateShiftCost(hoursWorked, hourlyRate)
-    },[start, finish, hoursWorked])
 
-    useEffect(() => {
-
-        diff_minutes(finish, start, breakLength);
-        // calculateShiftCost(hoursWorked, hourlyRate)
-
-    },[ start, finish, breakLength]);
-    useEffect(() => {
-        calculateShiftCost(hoursWorked, hourlyRate)
+    },[ finish, start, breakLength])
 
 
-    },[hoursWorked])
     function createShift(e) {
+    
         e.preventDefault()
-        
-        // diff_minutes(finish, start, breakLength);
-        // calculateShiftCost(hoursWorked, hourlyRate)
 
-
-        // console.log(shiftCost);
-        // console.log(hoursWorked);
-        
-
-        if (start && finish) {
-            // diff_minutes(finish, start, breakLength);
-            // diff_minutes(finish, start, breakLength);
-            // calculateShiftCost(hoursWorked, hourlyRate)
             fetch('/api/shifts', {
                 method: "POST",
                 headers: {
@@ -232,41 +120,31 @@ function Shifts({user, selectedOrg}) {
                     setShiftDate('');
                     setStartTime('');
                     setFinishTime('');
-                    setBreakLength('');
-                    
+                    setBreakLength(''); 
                   r.json()
                   .then((shift) => {
                       const updatedShiftsList = [...allShifts, shift]
                       setAllShifts(updatedShiftsList)
                   })
-               
                 }else {
                     r.json().then((error)=> {
                         setErrors(error.errors)
                     });
                 }
             });
-         }
-
-
-        // console.log(start);
-        // console.log(finish);
-
+        
+   
     } 
         const displayShifts = allShifts.map((shift) => (
         <ShiftCard key={shift.id} shift={shift} hoursWorked={shift.hours_worked} shiftCost={shift.shift_cost} />
     ))
 
-
-
     return(
         <div>
             <form type='submit'>
-           
-                <table>
+                <table >
                    <thead>
                        <tr>
-                        
                             <th>Employee name</th>
                             <th>Shift date</th>
                             <th>Start time</th>
@@ -278,24 +156,10 @@ function Shifts({user, selectedOrg}) {
                     </thead>
                     <tbody>
                         {displayShifts}
-                  
-                    
-                        {/* <tr>
-                            <td>{user.username}</td>
-                            <td>{shiftDate}</td>
-                            <td>{startTime} {startAmPm}</td>
-                            <td>{finishTime} {finishAmPm}</td>
-                            <td>{breakLength}</td>
-                            
-                            <td>{hoursWorked}</td>
-                            <td>{shiftCost}</td>
-                        </tr> */}
-                    </tbody>
-
-
-                   
+                    </tbody> 
                 </table>
-                    date
+                <div className='table-form'>
+                    Date
                     <input 
                     type='text'
                     value={shiftDate}
@@ -303,25 +167,20 @@ function Shifts({user, selectedOrg}) {
                     >
                     </input>
               
-                    start time
+                    Start time
                     <input 
                     type='text'
                     value={startTime}
                     onChange={(e) => setStartTime(e.target.value)}
                     >
-                
-                        
                      </input>
                      <select value={startAmPm} onChange={(e) => setStartAmPm(e.target.value)}>
                             <option value="" defaultValue disabled hidden>AM/PM</option>
-
                             <option 
                             value='am' >am</option>
                             <option value='pm'>pm</option>
-
                         </select>
-                  
-                     finish time
+                     Finish time
                      <input 
                     type='text'
                     value={finishTime} 
@@ -330,26 +189,22 @@ function Shifts({user, selectedOrg}) {
                      </input>
                      <select value={finishAmPm} onChange={(e) => setFinishAmPm(e.target.value)}>
                             <option value="" defaultValue disabled hidden>AM/PM</option>
-
                             <option value='am'>am</option>
                             <option value='pm' >pm</option>
-
                         </select>
-
+                    Break length
                     <input 
                     type='text'
                     value={breakLength}
                     onChange={(e) => setBreakLength(e.target.value)}
                     >
                     </input>
-                   
                 <button onClick={createShift}>Create Shift</button>
-            
+                </div>
             </form>
             {errors ? errors.map((error) => (
                 <li key={error}>{error}</li>
             )) : null}
-
 
         </div>
     )

@@ -4,17 +4,13 @@ import { useNavigate } from 'react-router-dom';
 
 function PasswordReset({setPasswordResetSuccess, setShowPasswordReset}) {
 
-    const [email, setEmail] = useState('');
-
+    
     const [showTokenInput, setShowTokenInput] = useState(false)
     const [token, setToken] = useState('');
-
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
-
     const [errors, setErrors] = useState([]);
- 
-
 
     function handleSubmitTokenSend(e) {
         e.preventDefault()
@@ -24,21 +20,16 @@ function PasswordReset({setPasswordResetSuccess, setShowPasswordReset}) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                
                 email_address: email
             })
         })
         .then((r) => {
             if(r.ok) {
                 setShowTokenInput(true)
-                
             } else{
                 r.json().then((err) => setErrors(err.errors))
             }
-           
-
         })
- 
     }
 
     function handleSubmitPasswordReset(e){
@@ -53,23 +44,18 @@ function PasswordReset({setPasswordResetSuccess, setShowPasswordReset}) {
                 email_address: email,
                 password, 
                 passwordConfirmation
-
             })
         })
         .then((r) => {
             if(r.ok)  {
                 setPasswordResetSuccess(true)
                 setShowPasswordReset(false)
-           
-             
             }else{
                 r.json().then((err) => setErrors(err.errors))
             }
-          
         })
     }
 
-    // console.log(user);
 
     return (
         <>
@@ -81,11 +67,9 @@ function PasswordReset({setPasswordResetSuccess, setShowPasswordReset}) {
         type='text'
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        
         >
         </input>
         <button type='submit'>Reset Password</button>
-
         </form>
         {showTokenInput ?
         <> 
@@ -99,7 +83,6 @@ function PasswordReset({setPasswordResetSuccess, setShowPasswordReset}) {
             </input>
             <br></br>
             <label>New Password (<em>6 characters minimum</em>): </label>
-            
             <input
             type="password"
             id='password'
@@ -116,16 +99,12 @@ function PasswordReset({setPasswordResetSuccess, setShowPasswordReset}) {
             ></input>
             <br></br>
             <button className="button" type='submit'>Submit</button>
-
-        
         </form>
-
         </>
         : null }
 
         {showTokenInput ? <p>Please check your email for a password reset token.</p> : null}
-
-
+        
         {errors ? errors.map((err) => (<p>{err}</p>)) 
                 : null}
         </>

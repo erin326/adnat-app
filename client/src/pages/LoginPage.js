@@ -8,17 +8,12 @@ function LoginPage({ onLogin }) {
 
     const [showLoginForm, setShowLoginForm] = useState(true)
     const[showPasswordReset, setShowPasswordReset] = useState(false)
-
     const [passwordResetSuccess, setPasswordResetSuccess] = useState(false)
-
 
     return (
         <div className='login-page'>
-         
-
             {showLoginForm ? (
                 <>
-            
                 <LoginForm onLogin={onLogin}/>
                 <h3>Don't have an account? 
                     <button
@@ -26,9 +21,7 @@ function LoginPage({ onLogin }) {
                     </button>
                 </h3>
                 <button onClick={() => setShowPasswordReset(true)}>Forgot your password?</button>
-
                 </>
-
             ) : (
                 <>
                 <SignupForm onLogin={onLogin}/>
@@ -39,25 +32,19 @@ function LoginPage({ onLogin }) {
                         Log In
                     </button>
                 </p>
-  
                 </>
-  
             )}
             
             {showPasswordReset ? 
-          
                     <PasswordReset  setPasswordResetSuccess={setPasswordResetSuccess}
                     setShowPasswordReset={setShowPasswordReset}/>
                      : null
                 }
 
                 {passwordResetSuccess ? <p>Password reset successful!  Please login with your new password.</p> : null}
-         
         </div>
     )
     
 }
-
-
 
 export default LoginPage;

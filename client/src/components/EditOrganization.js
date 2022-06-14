@@ -1,33 +1,17 @@
 import {useState} from 'react';
-import { useEffect } from 'react'
 import {useNavigate} from 'react-router-dom'
 
 
 function EditOrganization({user,  selectedOrg}) {
 
-    // const [organization, setOrganization] = useState({});
-    // const location = useLocation()
-    // const {from } = location.state
+    let org;
+    if (!user.organization) {
+            org = selectedOrg
 
-    // useEffect(() => {
-    //     fetch(`/api/organizations/${user.organization.id}`)
-    //     .then((r) => r.json())
-    //     .then((data) => setOrganization(data))
+    } else{
+        org = user.organization
+    }
 
-    // },[user.organization])
-
-  let org;
-  if (!user.organization) {
-        org = selectedOrg
-    
-      console.log('selected');
-  } else{
-    // fetch(`/api/organizations/${user.organization.id}`)
-    // .then((r) => r.json())
-    // .then((data) => setOrganization(data))
-     org = user.organization
-      console.log('notselected');
-  }
     const [errors, setErrors] = useState([]);
     console.log(user.organization);
 
@@ -59,35 +43,13 @@ function EditOrganization({user,  selectedOrg}) {
     
     }
 
-    console.log(org);
- 
     function handleDeleteOrg() {
         fetch(`/api/organizations/${org.id}`, {
             method: "DELETE"
         })
         navigate('/')
-        // window.location.reload()
     }
 
-
-    // function handleUpdateSubmit(e){
-    //     e.preventDefault()
-    //     fetch(`api/anorganizationanizations/${organization.id}`, {
-    //         method: "PATCH",
-    //         headers: {
-    //             "Content-Type" : "application/json"
-    //         }, 
-    //         body: JSON.stringify({name, hourly_rate: hourlyRate})
-    //     })
-    //     .then((r) => {
-    //         if(r.ok) {
-    //             navigate('/')
-    //         }else {
-    //             r.json().then((error) => setErrors(error.errors))
-    //         }
-    //     })
-
-    // }
 
     return(
         <div>

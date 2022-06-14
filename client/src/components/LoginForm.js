@@ -48,6 +48,10 @@ function LoginForm({onLogin}) {
             <button  className="button" type='submit'>Login</button>
         
         </form>
+
+        
+        {errors ? errors.map((err) => (<p>{err}</p>)) 
+                : null}
         </>
     )
 }

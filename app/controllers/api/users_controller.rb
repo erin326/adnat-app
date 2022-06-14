@@ -15,14 +15,6 @@ class Api::UsersController < ApplicationController
         
         user = User.find_by(id: session[:user_id])
         if user
-            
-
-        # zone = ActiveSupport::TimeZone.new("Central Time (US & Canada)")
-        # shifts = user.shifts
-        # starts = shifts.map{|s| s.start.in_time_zone(zone)}
-            # user.shifts.all.convert_time
-     
-    
             render json: user,  status: :created
         else
             render json: {errors: ["Not authorized"]}, status: :unauthorized
@@ -41,9 +33,6 @@ class Api::UsersController < ApplicationController
         end 
     end
 
-    
-
-  
 
     private 
     

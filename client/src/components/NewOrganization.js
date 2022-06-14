@@ -6,7 +6,7 @@ function NewOrganization() {
     const [hourlyRate, setHourlyRate] = useState('');
 
     function handleSubmit(e) {
-        e.preventDefault();
+        // e.preventDefault();
         fetch('/api/organizations', {
             method: "POST",
             headers: {

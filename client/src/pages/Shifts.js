@@ -59,7 +59,7 @@ function Shifts({user}) {
         if(hoursWorked) {
             calculateShiftCost(hoursWorked, hourlyRate)
 
-        }
+        } 
     }
 
     function calculateShiftCost(hoursWorked, hourlyRate) {
@@ -77,6 +77,7 @@ function Shifts({user}) {
 
             setStart(startStr)
             setFinish(finishStr)
+
         } else{ 
             setStart('')
             setFinish('')
@@ -86,14 +87,14 @@ function Shifts({user}) {
         if(start && finish) {
             diff_minutes(finish, start, breakLength)
 
-        }
-
+        }      
+       
     }
 
     useEffect(() => {
         convertTime()
 
-    },[ finish, start, breakLength])
+    },[finish, start, breakLength])
 
 
     function createShift(e) {

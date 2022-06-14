@@ -13,7 +13,7 @@ npm start --prefix client
 ```
 
 
-Environment
+##Environment
 
 * SQLite 1.4
 
@@ -24,23 +24,23 @@ Environment
 * Node 16.14.0
 
 
-Dependencies: 
+##Dependencies: 
 
 * React-router-dom 6.3.0
 * React-scripts 5.0.1
 
-Additional Gems used: 
+##Additional Gems used: 
 
 * Bcrypt 3.1.7 
 * Figaro 
 * Active Model Serializer 
 
 
-Configuration
+##Configuration
 
 *Configured with action mailer enabled, uses default host: localhost:3000, configured for gmail accounts. See config/environments/development.rb for more details.
 
 
-This was a fun build! 
+
 
 

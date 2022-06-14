@@ -1,6 +1,6 @@
 #Adnat application for Workforce.com
 
-Welcome!It's been a lot of fun doing this code activity for Workforce. I hope you all enhoy.
+Welcome!  It's been a lot of fun doing this code activity for Workforce. I hope you all enhoy.
 
 This application uses a Ruby on Rails API backend and a React JS frontend. 
 
@@ -38,7 +38,7 @@ npm start --prefix client
 
 ##Configuration
 
-*Configured with action mailer enabled, uses default host: localhost:3000, configured for gmail accounts. See config/environments/development.rb for more details.
+*Configured with action mailer enabled, uses default host: localhost:3000, configured for gmail accounts.  See config/environments/development.rb for more details.
 
 
 

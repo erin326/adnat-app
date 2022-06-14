@@ -12,7 +12,7 @@ class Api::PasswordsController < ApplicationController
           # SEND EMAIL HERE
           render json: {status: 'ok'}, status: :ok
         else
-          render json: {error: ['Email address not found. Please check and try again.']}, status: :not_found
+          render json: {errors: ['Email address not found. Please check and try again.']}, status: :not_found
         end
     end
 
@@ -20,7 +20,7 @@ class Api::PasswordsController < ApplicationController
             token = params[:token].to_s
         
             if params[:email_address].blank?
-              return render json: {error: 'Token not present'}
+              return render json: {errors: 'Token not present'}
             end
         
             user = User.find_by(password_reset_token: token)
@@ -29,10 +29,10 @@ class Api::PasswordsController < ApplicationController
               if user.reset_password!(params[:password])
                 render json: {status: 'ok'}, status: :ok
               else
-                render json: {error: user.errors.full_messages}, status: :unprocessable_entity
+                render json: {errors: user.errors.full_messages}, status: :unprocessable_entity
               end
             else
-              render json: {error:  ['Link not valid or expired. Try generating a new link.']}, status: :not_found
+              render json: {errors:  ['Link not valid or expired. Try generating a new link.']}, status: :not_found
             end
     end
 

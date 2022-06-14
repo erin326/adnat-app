@@ -11,15 +11,10 @@ function LoginPage({ onLogin }) {
     const [showLoginForm, setShowLoginForm] = useState(true)
     const[showPasswordReset, setShowPasswordReset] = useState(false)
 
-    // if(showPasswordReset) {
-    //     <>
-    //     <PasswordReset />
-    //     </>
-    // }
-    // else{
-    //     null
-    // }
-    // showPasswordReset ? setShowPasswordReset(!showPasswordReset) : showPasswordReset
+    const [passwordResetSuccess, setPasswordResetSuccess] = useState(false)
+
+    // showPasswordReset ? setShowPasswordReset(!showPasswordReset) : setShowPasswordReset(showPasswordReset)
+    // showPasswordReset === true ? setShowPasswordReset(!showPasswordReset) : setShowPasswordReset(false)
 
     return (
         <div className='login-page'>
@@ -60,8 +55,17 @@ function LoginPage({ onLogin }) {
             )}
             
             {showPasswordReset ? 
-                    <PasswordReset /> : null
+          
+                    <PasswordReset 
+
+                    passwordResetSuccess={passwordResetSuccess} setPasswordResetSuccess={setPasswordResetSuccess}
+                    setShowLoginForm={setShowLoginForm} showLoginForm={showLoginForm}
+                    setShowPasswordReset={setShowPasswordReset}/>
+                  
+                     : null
                 }
+
+                {passwordResetSuccess ? <p>Password reset successful!  Please login with your new password.</p> : null}
          
         </div>
     )

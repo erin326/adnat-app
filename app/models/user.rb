@@ -26,7 +26,7 @@ class User < ApplicationRecord
         (self.password_reset_sent_at + 1.hour) > Time.zone.now
       end
     
-      def reset_password(password)
+      def reset_password!(password)
         self.password_reset_token = nil
         self.password = password
         save!

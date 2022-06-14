@@ -1,18 +1,25 @@
 import {useEffect, useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
-function PasswordReset({user}) {
+function PasswordReset({user, setPasswordResetSuccess, setShowPasswordReset}) {
 
     const [email, setEmail] = useState('');
 
     const [showTokenInput, setShowTokenInput] = useState(false)
-    const [token, setToken] = useState('')
+    const [token, setToken] = useState('');
+
+    const [password, setPassword] = useState('');
+    const [passwordConfirmation, setPasswordConfirmation] = useState('');
+
+    const [errors, setErrors] = useState([]);
+    const [message, setMessage] = useState('')
+
+    const navigate = useNavigate()
 
 
-
-    function handleSubmitPasswordReset(e) {
+    function handleSubmitTokenSend(e) {
         e.preventDefault()
-        setShowTokenInput(true)
         fetch(`/api/forgot_password`, {
             method: "POST",
             headers: {
@@ -23,14 +30,56 @@ function PasswordReset({user}) {
                 email_address: email
             })
         })
-        .then((r) => r.json())
-        .then((data) => console.log(data))
+        .then((r) => {
+            if(r.ok) {
+                setShowTokenInput(true)
+                
+            } else{
+                r.json().then((err) => setErrors(err.errors))
+            }
+           
+
+        })
+ 
     }
+
+    function handleSubmitPasswordReset(e){
+        e.preventDefault()
+        fetch(`/api/reset_password`, {
+            method: "POST", 
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                token, 
+                email_address: email,
+                password, 
+                passwordConfirmation
+
+            })
+        })
+        .then((r) => {
+            if(r.ok)  {
+                setPasswordResetSuccess(true)
+                setShowPasswordReset(false)
+            
+
+                // setMessage('Password reset successful!  Please login with your new password.')
+                
+             
+            }else{
+                r.json().then((err) => setErrors(err.errors))
+            }
+          
+        })
+    }
+
     // console.log(user);
 
     return (
         <>
-        <form onSubmit={handleSubmitPasswordReset}
+        <br></br>
+        <form onSubmit={handleSubmitTokenSend}
         type='submit'>
         Please enter your email address
         <input
@@ -45,17 +94,50 @@ function PasswordReset({user}) {
         </form>
         {showTokenInput ?
         <> 
-        <form>
-            <input
+        <form onSubmit={handleSubmitPasswordReset}>
+            Token:  
+             <input
             type="text"
             value={token}
             onChange={(e) => setToken(e.target.value)}
             >
             </input>
+            <br></br>
+            <label>New Password (<em>6 characters minimum</em>): </label>
+            
+            <input
+            type="password"
+            id='password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            ></input>
+            <br></br>
+            <label>New Password Confirmation: </label>
+            <input
+            type="password"
+            id="password_confirmation"
+            value={passwordConfirmation}
+            onChange={(e)=> setPasswordConfirmation(e.target.value)}
+            ></input>
+            <br></br>
+            <button className="button" type='submit'>Submit</button>
+
+        
         </form>
 
         </>
         :null }
+
+        {showTokenInput ? <p>Please check your email for a password reset token.</p> : null}
+
+        {/* {message ? message : null}
+         */}
+     
+
+
+
+        {errors ? errors.map((err) => (<p>{err}</p>)) 
+                : null}
         </>
     )
 }
